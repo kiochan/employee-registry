@@ -4,13 +4,27 @@
   "version": "0.0.0",
   "description": "simple system for managing data of employee",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "commit": "git-cz"
   },
-  "keywords": ["react", "typescript"],
+  "keywords": [
+    "react",
+    "typescript"
+  ],
   "author": {
-    "name" : "Xingchen Sun",
-    "email" : "sunxingchen@live.com",
-    "url" : "https://github.com/kiochan"
+    "name": "Xingchen Sun",
+    "email": "sunxingchen@live.com",
+    "url": "https://github.com/kiochan"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
+  },
+  "devDependencies": {
+    "commitizen": "^4.2.5",
+    "cz-conventional-changelog": "^3.3.0",
+    "git-cz": "^4.9.0"
+  }
 }
