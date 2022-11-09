@@ -12,7 +12,6 @@ module.exports = {
     project: ['./tsconfig.json'],
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
-  rules: {},
   settings: {
     'import/resolver': {
       typescript: {},
@@ -22,4 +21,7 @@ module.exports = {
     },
   },
   ignorePatterns: ['next-env.d.ts'],
+  rules: {
+    'react/react-in-jsx-scope': 'off',
+  },
 }
