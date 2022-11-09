@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "employee-registry",
+  "version": "0.0.0",
+  "description": "simple system for managing data of employee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["react", "typescript"],
+  "author": {
+    "name" : "Xingchen Sun",
+    "email" : "sunxingchen@live.com",
+    "url" : "https://github.com/kiochan"
+  },
+  "license": "MIT"
+}
