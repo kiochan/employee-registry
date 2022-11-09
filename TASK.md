@@ -2,12 +2,12 @@
 
 ## General information
 
-* for implementation, please use your GitHub account for the project
-* make sure the repositories are public
-* after completion submit a link with the repository that contains the solution
-* make sure to show proper Git usage
-* scheduled time: 7 days
-* any changes after submitting the challenge will invalidate
+- for implementation, please use your GitHub account for the project
+- make sure the repositories are public
+- after completion submit a link with the repository that contains the solution
+- make sure to show proper Git usage
+- scheduled time: 7 days
+- any changes after submitting the challenge will invalidate
 
 ## Application request
 
@@ -17,29 +17,29 @@ So, they requested us to create an employee management application.
 
 The stakeholder requested following feature bundles in sequence:
 
-* Bundle 1
-  * Registration page so every employee can register itself
-  * Employee must login before being able to use the application
-  * Landing page as overview of existing employees
-* Bundle 2:
-  * A logged in employee can add another employee
-  * Ability to import employees over a CSV file
-* Bundle 3:
-  * Being able to edit and delete employees
-* Bundle 4:
-  * Add and display comments to employees on employee detail page
-  * Display author and date of the comment
+- Bundle 1
+  - Registration page so every employee can register itself
+  - Employee must login before being able to use the application
+  - Landing page as overview of existing employees
+- Bundle 2:
+  - A logged in employee can add another employee
+  - Ability to import employees over a CSV file
+- Bundle 3:
+  - Being able to edit and delete employees
+- Bundle 4:
+  - Add and display comments to employees on employee detail page
+  - Display author and date of the comment
 
 ## Additional information
 
-* An employee data includes
-  * username
-  * email
-  * last name
-  * first name
-  * address
-  * role
-* A comment consists of multiline text
+- An employee data includes
+  - username
+  - email
+  - last name
+  - first name
+  - address
+  - role
+- A comment consists of multiline text
 
 ## Task
 
@@ -54,11 +54,11 @@ attention to segregation of duties.
 
 ### Frontend Part
 
-* the frontend must be implemented with React
-* it is up to you how to handle local and global states and how to integrate the API
-* you can choose any UI framework you want
-* using boilerplate's is allowed
-* only last version of Mozilla Firefox and Chrome must be supported
+- the frontend must be implemented with React
+- it is up to you how to handle local and global states and how to integrate the API
+- you can choose any UI framework you want
+- using boilerplate's is allowed
+- only last version of Mozilla Firefox and Chrome must be supported
 
-*Hints: Please consider this code challenge as a team project. Your colleagues must understand your
-code, architecture, workflow, and decisions. Please follow best practices.*
+_Hints: Please consider this code challenge as a team project. Your colleagues must understand your
+code, architecture, workflow, and decisions. Please follow best practices._

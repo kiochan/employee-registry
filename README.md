@@ -12,9 +12,9 @@ To read the original requirements, [click here](./TASK.md).
 
 After installing the NPM dependencies, use the following command to start it.
 
-*This project is recommended to use `pnpm` to build, other package managers may also work but will not be tested.*
+_This project is recommended to use `pnpm` to build, other package managers may also work but will not be tested._
 
-*For more about pnpm click [here](https://pnpm.io/).*
+_For more about pnpm click [here](https://pnpm.io/)._
 
 ```shell
 pnpm start
@@ -22,4 +22,4 @@ pnpm start
 
 ## Change logs
 
-To view the project log, go to  [click here](./CHANGELOG.md).
+To view the project log, go to [click here](./CHANGELOG.md).
