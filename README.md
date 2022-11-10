@@ -10,7 +10,7 @@ To read the original requirements, [click here](./TASK.md).
 
 ## Getting Started
 
-1. Create a `.env` file like below:
+1. Create a `.env` file like below: (see `.env_template`)
 
    ```plaintext
    MONGODB_USERNAME="<USERNAME>"
