@@ -10,15 +10,36 @@ To read the original requirements, [click here](./TASK.md).
 
 ## Getting Started
 
-After installing the NPM dependencies, use the following command to start it.
+1. Create a `.env` file like below:
 
-_This project is recommended to use `pnpm` to build, other package managers may also work but will not be tested._
+   ```plaintext
+   MONGODB_USERNAME="<USERNAME>"
+   MONGODB_PASSWORD="<SECRET>"
+   MONGODB_HOST="<HOST>"
+   MONGODB_DBNAME="<DATABASE_NAME>"
+   ```
 
-_For more about pnpm click [here](https://pnpm.io/)._
+2. Install all dependencies using pnpm.
 
-```shell
-pnpm start
-```
+   ```shell
+   pnpm i
+   ```
+
+   _This project is recommended to use `pnpm` as package manager, other package managers may also work but will they will not be tested._
+
+   _For more about pnpm click [here](https://pnpm.io/)._
+
+3. Build it
+
+   ```shell
+   pnpm build
+   ```
+
+4. Start it
+
+   ```shell
+   pnpm start
+   ```
 
 ## Change logs
 
