@@ -34,6 +34,7 @@
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "commitizen": "^4.2.5",
@@ -54,8 +55,11 @@
     "typescript": "*"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
+    "mongoose": "^6.7.2",
     "next": "13.0.2",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "uuid": "^9.0.0"
   }
 }

@@ -1,45 +1,29 @@
-import type { IDatabaseConstructor, IDatabase, DbMode } from '../types/db'
+import { connect } from 'mongoose'
+import { db as dbConfig } from '../config/db'
+import { EmployeeModel } from './model/employee'
+import { TokenModel } from './model/token'
 
-class _Database implements IDatabase {
-  protected static mode: DbMode = 'low'
-
-  /**
-   * set database mode
-   * @param mode database mode
-   * @returns class itself
-   */
-  static use(mode: DbMode): typeof _Database {
-    if (mode === 'low') return _Database
-
-    throw new TypeError('non-supported database mode')
-  }
-
-  static get(databaseName: string): IDatabase {
-    return new _Database(databaseName)
-  }
-
-  protected _name: string
-
-  /**
-   * name of database
-   */
-  get name(): string {
-    return this._name
-  }
-
-  /**
-   * constructor to create a new database
-   * @param name name of database
-   */
-  protected constructor(name: string) {
-    this._name = name
-  }
-
-  async connect(): Promise<this> {
-    // TODO: connect database
-
-    return this
-  }
+interface Models {
+  employee: typeof EmployeeModel
+  token: typeof TokenModel
 }
 
-export const Database: IDatabaseConstructor = _Database
+interface DbController {
+  model: Models
+}
+
+export function useDb(): DbController {
+  connect(dbConfig.uri).catch((err) => {
+    // mongoose will automatically try to reconnect if it fails.
+    // so we didn't handle the error manually
+    // we only print it to the console
+    console.error(err)
+  })
+
+  return {
+    model: {
+      employee: EmployeeModel,
+      token: TokenModel,
+    },
+  }
+}
