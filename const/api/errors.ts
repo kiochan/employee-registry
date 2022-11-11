@@ -17,3 +17,9 @@ export const notFound = {
   status: 'error',
   message: 'Not Found: Resources not exist',
 } as const
+
+export const internalServerError = {
+  code: HttpStatusCode.InternalServerError,
+  status: 'error',
+  message: 'Internal Server Error',
+} as const
