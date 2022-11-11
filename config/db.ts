@@ -23,5 +23,5 @@ export const db: DbConfig = {
    *
    * You can hardcode this, but we RECOMMEND you to use a dotenv file.
    */
-  uri: `mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DBNAME}/?retryWrites=true&w=majority`,
+  uri: `mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DBNAME}?retryWrites=true&w=majority`,
 }
