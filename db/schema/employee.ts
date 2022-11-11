@@ -5,6 +5,8 @@ import { Schema, Document } from 'mongoose'
  */
 export interface IEmployee extends Document {
   username: string
+  password: string
+  passwordSalt: string
   email?: string
   lastName?: string
   firstName?: string
@@ -17,6 +19,8 @@ export interface IEmployee extends Document {
  */
 export const EmployeeSchema = new Schema<IEmployee>({
   username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  passwordSalt: { type: String, required: true },
   email: { type: String, required: false },
   lastName: { type: String, required: false },
   firstName: { type: String, required: false },
