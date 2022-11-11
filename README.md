@@ -41,6 +41,59 @@ To read the original requirements, [click here](./TASK.md).
    pnpm start
    ```
 
+## Code style and formatting
+
+This project use [JavaScript Standard Style](https://standardjs.com/).
+
+This project will use comments and typing to avoid excessive documentation.
+
+The priority is as follows:
+
+```plaintext
+meaningful variable/type name < comments < documentation
+```
+
+We should use meaningful variable/type name:
+
+```typescript
+// bad
+/**
+ * fetch a image from server by filename
+ * @param name filename
+ * @returns Image instance
+ */
+function fetch(name) {
+  // implementation
+}
+
+// good
+function fetchImageByFilename(filename: string): Image {
+  // implementation
+}
+```
+
+We should avoid comments like the following: (because it's very obvious)
+
+```typescript
+// bad
+interface Point {
+  /**
+   * x-axis coordinate
+   */
+  x: number
+  /**
+   * y-axis coordinate
+   */
+  y: number
+}
+
+// good
+interface Point {
+  x: number
+  y: number
+}
+```
+
 ## Change logs
 
 To view the project log, go to [click here](./CHANGELOG.md).
