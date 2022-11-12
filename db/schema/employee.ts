@@ -5,8 +5,6 @@ import { Schema, Document } from 'mongoose'
  */
 export interface IEmployee extends Document {
   username: string
-  password: string
-  passwordSalt: string
   email?: string
   lastName?: string
   firstName?: string
@@ -14,13 +12,21 @@ export interface IEmployee extends Document {
   role?: string
 }
 
+export interface IUserBase extends Document {
+  username: string
+  password?: string
+  passwordSalt?: string
+}
+
+export interface IEmployeeWithPassword extends IEmployee, IUserBase {}
+
 /**
  * schema for document `employee`
  */
-export const EmployeeSchema = new Schema<IEmployee>({
+export const EmployeeSchema = new Schema<IEmployeeWithPassword>({
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  passwordSalt: { type: String, required: true },
+  password: { type: String, required: false, default: undefined },
+  passwordSalt: { type: String, required: false, default: undefined },
   email: { type: String, required: false },
   lastName: { type: String, required: false },
   firstName: { type: String, required: false },
