@@ -6,4 +6,4 @@ import { EmployeeSchema } from '../schema/employee'
 /**
  * model for employee collection
  */
-export const EmployeeModel = model<IEmployee>('User', EmployeeSchema)
+export const EmployeeModel = model<IEmployee>('Employee', EmployeeSchema)
