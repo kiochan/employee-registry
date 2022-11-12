@@ -7,9 +7,13 @@ export interface ResponseBase {
    */
   code: number
   /**
-   * status either `success` or `error`
+   * status either `success`, `fail` or `error`
+   * `success` - a operation succeeded
+   * `fail` - a operation reject by server
+   * `error` - client sent what it should not be sent or
+   *  server dose not know what client want to do
    */
-  status: 'success' | 'error'
+  status: 'success' | 'fail' | 'error'
 }
 
 /**
@@ -27,6 +31,14 @@ export interface ResponseBaseSuccessful extends ResponseBase {
  * base interface for failed response
  */
 export interface ResponseBaseFailure extends ResponseBase {
+  status: 'fail'
+  message: string
+}
+
+/**
+ * base interface for error response
+ */
+export interface ResponseBaseError extends ResponseBase {
   status: 'error'
   message: string
 }
