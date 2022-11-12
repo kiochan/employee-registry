@@ -1,4 +1,4 @@
-import { ResponseBaseSuccessful } from './common'
+import { ResponseBaseFailure, ResponseBaseSuccessful } from './common'
 
 /**
  * login option
@@ -16,16 +16,12 @@ export interface RequestCreateToken {
   password: string
 }
 
+export type ResponseCreateToken = ResponseCreateTokenSuccessful | ResponseCreateTokenFailure
+
 /**
- * return type of login option
+ * return type of login option if successful
  */
-export interface ResponseCreateToken extends ResponseBaseSuccessful {
-  /**
-   * status
-   *
-   * 'ok' - if login successfully
-   * 'failed' - if username and password mismatch
-   */
+export interface ResponseCreateTokenSuccessful extends ResponseBaseSuccessful {
   status: 'success'
   data: {
     /**
@@ -33,6 +29,14 @@ export interface ResponseCreateToken extends ResponseBaseSuccessful {
      */
     token: string
   }
+}
+
+/**
+ * return type of login option if unsuccessful
+ */
+export interface ResponseCreateTokenFailure extends ResponseBaseFailure {
+  status: 'fail'
+  message: string
 }
 
 /**
