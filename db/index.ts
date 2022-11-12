@@ -1,4 +1,4 @@
-import { connect } from 'mongoose'
+import { connect, connection } from 'mongoose'
 import { db as dbConfig } from '../config/db'
 import { EmployeeModel } from './model/employee'
 import { TokenModel } from './model/token'
@@ -13,12 +13,15 @@ interface DbController {
 }
 
 export function useDb(): DbController {
-  connect(dbConfig.uri).catch((err) => {
-    // mongoose will automatically try to reconnect if it fails.
-    // so we didn't handle the error manually
-    // we only print it to the console
-    console.error(err)
-  })
+  // if mongoose not connected then connect it
+  if (connection.readyState !== 1) {
+    connect(dbConfig.uri).catch((err) => {
+      // mongoose will automatically try to reconnect if it fails.
+      // so we didn't handle the error manually
+      // we only print it to the console
+      console.error(err)
+    })
+  }
 
   return {
     model: {
