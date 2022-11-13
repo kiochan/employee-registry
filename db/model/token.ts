@@ -4,4 +4,4 @@ import { createModel } from '../method/createModel'
 /**
  * model for employee collection
  */
-export const TokenModel = createModel('Token', TokenSchema)
+export const token = createModel('Token', TokenSchema)

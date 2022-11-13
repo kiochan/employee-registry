@@ -4,4 +4,4 @@ import { createModel } from '../method/createModel'
 /**
  * model for employee collection
  */
-export const EmployeeModel = createModel('Employee', EmployeeSchema)
+export const employee = createModel('Employee', EmployeeSchema)

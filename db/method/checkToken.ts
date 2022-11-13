@@ -1,16 +1,18 @@
-import { TokenModel } from '../model/token'
+import { token as tokenModel } from '../model/token'
 
 let timer: NodeJS.Timer
 
 function startGlobalTokenExpireCheckTime(): void {
   timer = setInterval(() => {
-    TokenModel.deleteMany({
-      expired: {
-        $gt: new Date(),
-      },
-    }).catch(() => {
-      console.error('lastGlobalTokenCheckTime: error')
-    })
+    tokenModel
+      .deleteMany({
+        expired: {
+          $gt: new Date(),
+        },
+      })
+      .catch(() => {
+        console.error('lastGlobalTokenCheckTime: error')
+      })
   }, 1000 * 3600) // 1 hour
 }
 
@@ -23,7 +25,7 @@ function startGlobalTokenExpireCheckTime(): void {
 export async function checkToken(token: string): Promise<boolean> {
   if (timer === undefined) startGlobalTokenExpireCheckTime()
 
-  const res = await TokenModel.findOne({ token }, { expired: 1, _id: 1 }).exec()
+  const res = await tokenModel.findOne({ token }, { expired: 1, _id: 1 })
 
   if (res === null) {
     return false
@@ -32,7 +34,7 @@ export async function checkToken(token: string): Promise<boolean> {
   // delete token if it expired
   if (res.expired.getTime() < Date.now()) {
     // no need for waiting it to be removed
-    TokenModel.deleteOne({ _id: res._id }).catch(() => {
+    tokenModel.deleteOne({ _id: res._id }).catch(() => {
       console.error('checkToken delete expired token: error')
     })
 
