@@ -1,4 +1,4 @@
-import { ResponseBaseFailure, ResponseBaseSuccessful } from './common'
+import type { ResponseBaseFailure, ResponseBaseSuccessful } from './common'
 
 /**
  * login option

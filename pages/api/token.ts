@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 import { badRequest, internalServerError } from '../../const/api/errors'
 import { usernameNotFound, usernamePasswordMismatch } from '../../const/api/token'
 import { useDb } from '../../db'
 import { getHashedPassword } from '../../lib/hashed-password'
-import { ResponseBaseError } from '../../types/api/common'
-import { ResponseCreateToken } from '../../types/api/token'
+import type { ResponseBaseError } from '../../types/api/common'
+import type { ResponseCreateToken } from '../../types/api/token'
 
 type ApiTokenResponse = ResponseBaseError | ResponseCreateToken
 

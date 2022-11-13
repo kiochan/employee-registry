@@ -1,4 +1,5 @@
-import { Schema, Document } from 'mongoose'
+import type { Document } from 'mongoose';
+import { Schema } from 'mongoose'
 
 /**
  * structure for document `employee`
