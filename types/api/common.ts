@@ -17,6 +17,17 @@ export interface ResponseBase {
 }
 
 /**
+ * base interface for response for a list
+ */
+export interface ResponseListBase<ItemType> extends ResponseBase {
+  status: 'success'
+  limit: number
+  offset: number
+  total: number
+  data: ItemType[]
+}
+
+/**
  * base interface for succeed response
  */
 export interface ResponseBaseSuccessful extends ResponseBase {
@@ -37,4 +48,8 @@ export interface ResponseBaseFailure extends ResponseBase {
 export interface ResponseBaseError extends ResponseBase {
   status: 'error'
   message: string
+}
+
+export interface RequestWithToken {
+  token: string
 }
