@@ -6,4 +6,4 @@ export const HttpStatusCode = {
   Forbidden: 403,
   NotFound: 404,
   InternalServerError: 500,
-}
+} as const
