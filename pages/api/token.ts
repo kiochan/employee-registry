@@ -36,6 +36,11 @@ export default async function tokenHandle(
         return res.status(usernameNotFound.code).json(usernameNotFound)
       }
 
+      // if password not set, that means it not a valid user for login
+      if (employeeData.password === undefined || employeeData.passwordSalt === undefined) {
+        return res.status(usernamePasswordMismatch.code).json(usernamePasswordMismatch)
+      }
+
       // check if password is correct
       // password is hashed for safety reasons
       if (password !== getHashedPassword(employeeData.password, employeeData.passwordSalt)) {
