@@ -26,9 +26,10 @@ export default async function tokenHandle(
       }
 
       // read userinfo from db
-      const employeeData = await model.employee
-        .findOne({ username }, { password: 1, passwordSalt: 1, _id: 1 })
-        .exec()
+      const employeeData = await model.employee.findOne(
+        { username },
+        { password: 1, passwordSalt: 1, _id: 1 },
+      )
 
       // check if user exist
       if (employeeData === null) {
