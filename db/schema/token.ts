@@ -17,5 +17,9 @@ export interface IToken extends Document {
 export const TokenSchema = new Schema<IToken>({
   employee: { type: Types.ObjectId, required: true },
   token: { type: String, required: false, default: createUuid },
-  date: { type: Date, required: false, default: Date.now },
+  date: {
+    type: Date,
+    required: false,
+    default: () => Date.now() + 1000 * 3600 * 24 * 7, // 7 days
+  },
 })
