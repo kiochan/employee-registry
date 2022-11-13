@@ -1,10 +1,9 @@
-import type { Document } from 'mongoose';
 import { Schema } from 'mongoose'
 
 /**
  * structure for document `employee`
  */
-export interface IEmployeeBase extends Document {
+export interface IEmployeeBase {
   username: string
   email?: string
   lastName?: string
@@ -13,7 +12,7 @@ export interface IEmployeeBase extends Document {
   role?: string
 }
 
-export interface IUserBase extends Document {
+export interface IUserBase {
   username: string
   password?: string
   passwordSalt?: string

@@ -1,11 +1,11 @@
-import type { ObjectId, Document } from 'mongoose'
+import type { ObjectId } from 'mongoose'
 
 import { Schema, Types } from 'mongoose'
 import { v4 as createUuid } from 'uuid'
 /**
  * structure for document `token`
  */
-export interface IToken extends Document {
+export interface IToken {
   employee: ObjectId
   token: string
   expired: Date
