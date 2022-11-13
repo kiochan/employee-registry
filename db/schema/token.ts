@@ -20,6 +20,6 @@ export const TokenSchema = new Schema<IToken>({
   expired: {
     type: Date,
     required: false,
-    default: () => Date.now() + 1000 * 3600 * 24 * 7, // 7 days
+    default: (): Date => new Date(Date.now() + 1000 * 3600 * 24 * 7), // 7 days
   },
 })
