@@ -21,10 +21,6 @@ export interface ResponseBase {
  */
 export interface ResponseBaseSuccessful extends ResponseBase {
   status: 'success'
-  /**
-   * payload data
-   */
-  data: any
 }
 
 /**
