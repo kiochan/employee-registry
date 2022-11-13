@@ -16,8 +16,6 @@ export interface RequestCreateToken {
   password: string
 }
 
-export type ResponseCreateToken = ResponseCreateTokenSuccessful | ResponseCreateTokenFailure
-
 /**
  * return type of login option if successful
  */
@@ -45,3 +43,5 @@ export interface ResponseCreateTokenFailure extends ResponseBaseFailure {
 export interface RequestDeleteToken {
   token: string
 }
+
+export type ResponseCreateToken = ResponseCreateTokenSuccessful | ResponseCreateTokenFailure
