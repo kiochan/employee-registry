@@ -23,5 +23,6 @@ module.exports = {
   ignorePatterns: ['next-env.d.ts'],
   rules: {
     'react/react-in-jsx-scope': 'off',
+    '@typescript-eslint/consistent-type-imports': 'warn',
   },
 }
