@@ -3,7 +3,7 @@ import { Schema, Document } from 'mongoose'
 /**
  * structure for document `employee`
  */
-export interface IEmployee extends Document {
+export interface IEmployeeBase extends Document {
   username: string
   email?: string
   lastName?: string
@@ -18,12 +18,12 @@ export interface IUserBase extends Document {
   passwordSalt?: string
 }
 
-export interface IEmployeeWithPassword extends IEmployee, IUserBase {}
+export interface IEmployee extends IEmployeeBase, IUserBase {}
 
 /**
  * schema for document `employee`
  */
-export const EmployeeSchema = new Schema<IEmployeeWithPassword>({
+export const EmployeeSchema = new Schema<IEmployee>({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: false, default: undefined },
   passwordSalt: { type: String, required: false, default: undefined },
