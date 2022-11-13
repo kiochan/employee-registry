@@ -1,3 +1,5 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { unauthorized } from '../../const/api/errors'
 import { token as tokenModel } from '../model/token'
 
 let timer: NodeJS.Timer
@@ -22,7 +24,11 @@ function startGlobalTokenExpireCheckTime(): void {
  * @param token token that need to be check
  * @returns if it is a valid token
  */
-export async function checkToken(token: string): Promise<boolean> {
+export async function isValidToken(token: string): Promise<boolean> {
+  // this is for testing
+  if (process.env.MAGIC_TOKEN !== undefined && process.env.MAGIC_TOKEN === token) {
+    return true
+  }
   if (timer === undefined) startGlobalTokenExpireCheckTime()
 
   const res = await tokenModel.findOne({ token }, { expired: 1, _id: 1 })
@@ -50,4 +56,23 @@ export async function checkToken(token: string): Promise<boolean> {
   })
 
   return true
+}
+
+/**
+ * check if api request with a valid token
+ *
+ * @param req next api request
+ * @param res next api response
+ * @returns true if value, otherwise false
+ */
+export async function isValidNextApiRequest(
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Promise<boolean> {
+  const token = String(req.query.token ?? '')
+  if (await isValidToken(token)) {
+    return true
+  }
+  res.status(unauthorized.code).json(unauthorized)
+  return false
 }
