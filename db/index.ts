@@ -1,15 +1,11 @@
 import { connect, connection } from 'mongoose'
 import { db as dbConfig } from '../config/db'
-import { EmployeeModel } from './model/employee'
-import { TokenModel } from './model/token'
-
-interface Models {
-  employee: typeof EmployeeModel
-  token: typeof TokenModel
-}
+import * as method from './method'
+import * as model from './model'
 
 interface DbController {
-  model: Models
+  model: typeof model
+  method: typeof method
 }
 
 export function useDb(): DbController {
@@ -24,9 +20,7 @@ export function useDb(): DbController {
   }
 
   return {
-    model: {
-      employee: EmployeeModel,
-      token: TokenModel,
-    },
+    model,
+    method,
   }
 }

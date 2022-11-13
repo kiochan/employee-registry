@@ -1,11 +1,7 @@
-import type { IToken } from '../schema/token'
-
-import { model, models } from 'mongoose'
-import { TokenSchema } from '../schema/token'
-
-const _model = model<IToken>('Token', TokenSchema)
+import { TokenSchema } from '../schema'
+import { createModel } from '../method/createModel'
 
 /**
  * model for employee collection
  */
-export const TokenModel = (models.Token as typeof _model) ?? _model
+export const TokenModel = createModel('Token', TokenSchema)
