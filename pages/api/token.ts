@@ -44,7 +44,9 @@ export default async function tokenHandle(
 
       // check if password is correct
       // password is hashed for safety reasons
-      if (password !== getHashedPassword(employeeData.password, employeeData.passwordSalt)) {
+      if (
+        employeeData.password !== getHashedPassword(password as string, employeeData.passwordSalt)
+      ) {
         // error => password not match
         return res.status(usernamePasswordMismatch.code).json(usernamePasswordMismatch)
       }
