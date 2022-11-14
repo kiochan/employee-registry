@@ -14,8 +14,8 @@ export interface IEmployeeBase {
 
 export interface IUserBase {
   username: string
-  password?: string
-  passwordSalt?: string
+  password: string
+  passwordSalt: string
 }
 
 export interface IEmployee extends IEmployeeBase, IUserBase {}
@@ -25,8 +25,8 @@ export interface IEmployee extends IEmployeeBase, IUserBase {}
  */
 export const EmployeeSchema = new Schema<IEmployee>({
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: false, default: undefined },
-  passwordSalt: { type: String, required: false, default: undefined },
+  password: { type: String, required: true },
+  passwordSalt: { type: String, required: true },
   email: { type: String, required: false },
   lastName: { type: String, required: false },
   firstName: { type: String, required: false },
