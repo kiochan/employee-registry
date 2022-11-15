@@ -36,7 +36,7 @@ const AppBar: React.FC<{}> = (): JSX.Element => {
   const [username, setUsername] = useState<string | null>(null)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       if (token === null) return
       const res = await axios({
         url: '/api/whois',
@@ -74,7 +74,6 @@ const AppBar: React.FC<{}> = (): JSX.Element => {
           {/* big screen logo */}
           <Link href='/'>
             <Box
-              component='a'
               sx={{
                 mr: 2,
                 minWidth: '150px',
@@ -119,7 +118,7 @@ const AppBar: React.FC<{}> = (): JSX.Element => {
             >
               {pages.map(({ link, name }, index) => (
                 <Link href={link} key={index}>
-                  <MenuItem component='a' onClick={handleCloseNavMenu}>
+                  <MenuItem onClick={handleCloseNavMenu}>
                     <Typography textAlign='center'>{name}</Typography>
                   </MenuItem>
                 </Link>
@@ -128,7 +127,7 @@ const AppBar: React.FC<{}> = (): JSX.Element => {
           </Box>
 
           {/* small screen Logo */}
-          <Box component='a' sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <Link href='/'>
               <Box
                 sx={{ minWidth: '150px', maxWidth: '200px', cursor: 'pointer', display: 'flex' }}
