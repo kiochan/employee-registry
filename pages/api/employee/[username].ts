@@ -6,8 +6,11 @@ import { useDb } from '../../../db'
 import { isValidNextApiRequest } from '../../../db/method'
 import type { IEmployee } from '../../../db/schema'
 import { generateSalt, getHashedPassword } from '../../../lib/hashed-password'
-import type { ResponseBaseSuccessful } from '../../../types/api/common'
-import type { ResponseEmployee, ResponseReadEmployee } from '../../../types/api/employee'
+import type {
+  ResponseEmployee,
+  ResponseReadEmployee,
+  ResponseCreateEmployee,
+} from '../../../types/api/employee'
 
 type ApiTokenResponse = ResponseEmployee
 
@@ -16,9 +19,6 @@ export default async function employeeHandle(
   res: NextApiResponse<ApiTokenResponse>,
 ): Promise<void> {
   try {
-    // check permissions
-    if (!(await isValidNextApiRequest(req, res))) return
-
     const { model } = useDb()
 
     const username = String(req.query.username ?? '')
@@ -35,6 +35,9 @@ export default async function employeeHandle(
     switch (req.method) {
       // READ
       case 'GET': {
+        // check permissions
+        if (!(await isValidNextApiRequest(req, res))) return
+
         if (employee === null) {
           return res.status(notFound.code).json(notFound)
         }
@@ -86,14 +89,33 @@ export default async function employeeHandle(
           }
         }
 
-        await model.employee.collection.insertOne(newObj)
+        const insertedIdForNewEmployee = (await model.employee.collection.insertOne(newObj))
+          .insertedId
 
-        const result: ResponseBaseSuccessful = {
-          code: HttpStatusCode.Created,
-          status: 'success',
+        const Token = model.token
+
+        const insertedTokenId = (
+          await model.token.collection.insertOne(
+            new Token({
+              employee: insertedIdForNewEmployee,
+            }),
+          )
+        ).insertedId
+
+        const tokenDocument = await model.token.findById(insertedTokenId, { token: 1 })
+
+        if (tokenDocument !== null) {
+          const result: ResponseCreateEmployee = {
+            code: HttpStatusCode.Created,
+            status: 'success',
+            data: {
+              token: tokenDocument.token,
+            },
+          }
+          return res.status(result.code).json(result)
         }
 
-        return res.status(result.code).json(result)
+        return res.status(internalServerError.code).json(internalServerError)
       }
     }
   } catch (e) {
