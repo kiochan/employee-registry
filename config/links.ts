@@ -1,6 +1,6 @@
 export default {
   home: '/',
-  myself: '/',
+  myself: '/details',
   login: '/login',
   register: '/register',
   logout: '/logout',
