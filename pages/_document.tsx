@@ -21,6 +21,7 @@ class AppDocument extends NextDocument {
   }
 
   render(): JSX.Element {
+
     return (
       <Html lang='en'>
         {/* <Head>{CssBaseline.flush()}</Head> */}

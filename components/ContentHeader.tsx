@@ -11,7 +11,7 @@ interface ContentHeaderWithSearchProps {
   enableSearch: true
   searchValue: string
   onSearchChange: (search: string) => void
-  onSearch: (search: string) => void
+  onSearchSubmit: (search: string) => void
   children: string
 }
 
@@ -42,8 +42,8 @@ function ContentHeader(props: ContentHeaderProps | ContentHeaderWithSearchProps)
     )
 
     const onClick = useCallback(() => {
-      _props.onSearch(search)
-    }, [_props.onSearch, search])
+      _props.onSearchSubmit(search)
+    }, [_props.onSearchSubmit, search])
 
     const onKeyPress = useCallback(
       (ev: React.KeyboardEvent<HTMLInputElement>) => {

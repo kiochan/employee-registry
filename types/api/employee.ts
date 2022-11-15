@@ -14,6 +14,7 @@ export interface RequestReadEmployees {
   token: string
   start?: number
   limit?: number
+  query?: string
 }
 
 /**

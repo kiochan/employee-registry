@@ -23,12 +23,24 @@ export default async function employeeHandle(
         // check query
         const offset = parseInt(String(req.query.offset ?? 0))
         const limit = parseInt(String(req.query.limit ?? 20))
+        const query = typeof req.query.query === 'string' ? req.query.query : null
         const total = await model.employee.count()
 
-        const employees = await model.employee
-          .find({}, { _id: 0, password: 0, passwordSalt: 0 })
-          .skip(offset)
-          .limit(limit)
+        const employees =
+          query === null
+            ? await model.employee
+                .find({}, { _id: 0, password: 0, passwordSalt: 0 })
+                .skip(offset)
+                .limit(limit)
+            : await model.employee
+                .find(
+                  { username: { $regex: query, $options: 'i' } },
+                  { _id: 0, password: 0, passwordSalt: 0 },
+                )
+                .skip(offset)
+                .limit(limit)
+
+        console.log(employees)
 
         const result: ResponseReadEmployees = {
           code: 200,

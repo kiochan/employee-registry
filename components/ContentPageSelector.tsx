@@ -25,8 +25,8 @@ function ContentPageSelector(props: ContentPageSelectorProps): JSX.Element {
       Math.abs(current - min) < howMuchPages / 2
         ? v < min + howMuchPages
         : Math.abs(current - max) < howMuchPages / 2
-        ? v > max - howMuchPages
-        : Math.abs(v - current) < howMuchPages / 2,
+          ? v > max - howMuchPages
+          : Math.abs(v - current) < howMuchPages / 2,
     )
     .filter((v) => v <= max && v >= min)
 
