@@ -8,8 +8,6 @@ const HomePage: React.FC = () => {
   const token = useAppSelector(s => s.token.value)
   const router = useRouter()
 
-  console.log({ token })
-
   if (token !== null) {
     router.push(links.myself).catch(console.error)
   }
