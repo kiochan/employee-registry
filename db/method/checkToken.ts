@@ -68,6 +68,7 @@ export async function isValidToken(token: string): Promise<boolean> {
 export async function isValidNextApiRequest(
   req: NextApiRequest,
   res: NextApiResponse,
+  sendResponse: boolean = true,
 ): Promise<boolean> {
   const token = String(req.query.token ?? '')
   if (await isValidToken(token)) {

@@ -45,6 +45,14 @@ export interface RequestCreateEmployee extends IEmployeeBase, RequestWithToken {
   password: string
 }
 
+/**
+ * response for create employee
+ */
+export interface ResponseCreateEmployee extends ResponseBaseSuccessful {
+  code: 201
+  data: { token: string }
+}
+
 export type ResponseEmployees = ResponseReadEmployees | ResponseBaseError
 
 // this type is not quite right, it is too generic
@@ -53,3 +61,4 @@ export type ResponseEmployee =
   | ResponseBaseSuccessful
   | ResponseBaseFailure
   | ResponseBaseError
+  | ResponseCreateEmployee
