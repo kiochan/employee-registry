@@ -36,7 +36,7 @@ const AppBar: React.FC<{}> = (): JSX.Element => {
   const [username, setUsername] = useState<string | null>(null)
 
   useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       if (token === null) return
       const res = await axios({
         url: '/api/whois',
@@ -46,6 +46,10 @@ const AppBar: React.FC<{}> = (): JSX.Element => {
         },
         validateStatus: (s) => s < 500,
       })
+
+      if (res.data.code === 401) {
+        dispatch({ type: 'token/delete' })
+      }
 
       if (res.data.code === 200) {
         setUsername(res.data.data.username)

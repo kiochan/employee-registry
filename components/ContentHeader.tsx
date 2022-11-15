@@ -73,13 +73,7 @@ function ContentHeader(props: ContentHeaderProps | ContentHeaderWithSearchProps)
           sx={{ flex: 1 }}
           onKeyPress={onKeyPress}
         />
-        <IconButton
-          type='submit'
-          sx={{}}
-          aria-label='search'
-          onClick={onClick}
-          disabled={search === ''}
-        >
+        <IconButton type='submit' sx={{}} aria-label='search' onClick={onClick} disabled={false}>
           <SearchIcon />
         </IconButton>
       </Box>

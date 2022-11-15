@@ -52,6 +52,10 @@ const LoginPage: React.FC = () => {
         validateStatus: (s) => s < 499,
       })
 
+      if (res.data.code === 401) {
+        dispatch({ type: 'token/delete' })
+      }
+
       if (res.data.code !== 201) {
         setErrorText(incorrectPasswordErrorText)
       } else {

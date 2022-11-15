@@ -27,7 +27,7 @@ export default async function employeeHandle(
         const total = await model.employee.count()
 
         const employees =
-          query === null
+          query === null || query === ''
             ? await model.employee
                 .find({}, { _id: 0, password: 0, passwordSalt: 0 })
                 .skip(offset)
@@ -39,8 +39,6 @@ export default async function employeeHandle(
                 )
                 .skip(offset)
                 .limit(limit)
-
-        console.log(employees)
 
         const result: ResponseReadEmployees = {
           code: 200,

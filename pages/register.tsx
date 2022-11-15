@@ -25,6 +25,16 @@ const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState<string>('')
   const [passwordAgain, setPasswordAgain] = useState<string>('')
 
+  const [fields, setFields] = useState<
+    Record<'email' | 'lastName' | 'firstName' | 'address' | 'role', string>
+  >({
+    firstName: '',
+    lastName: '',
+    role: '',
+    email: '',
+    address: '',
+  })
+
   const [errorText, setErrorText] = useState<string>('')
 
   const emailChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -53,6 +63,7 @@ const RegisterPage: React.FC = () => {
         method: 'post',
         url: `/api/employee/${username}`,
         params: {
+          ...fields,
           password,
         },
         validateStatus: (s) => s < 499,
@@ -64,6 +75,10 @@ const RegisterPage: React.FC = () => {
             type: 'token/create',
             payload: res.data.data.token,
           })
+          return
+        }
+        case 401: {
+          dispatch({ type: 'token/delete' })
           return
         }
         case 403: {
@@ -84,7 +99,7 @@ const RegisterPage: React.FC = () => {
   }
 
   return (
-    <AppContainer title={words.site.titles.login} shortBanner>
+    <AppContainer title={words.site.titles.register} shortBanner>
       <Box
         sx={{
           width: '100%',
@@ -160,9 +175,33 @@ const RegisterPage: React.FC = () => {
             />
           </Box>
 
+          {(
+            Object.keys(fields) as Array<'email' | 'lastName' | 'firstName' | 'address' | 'role'>
+          ).map((v, i) => {
+            return (
+              <Box sx={{ margin: '1rem', width: '100%' }} key={i}>
+                <TextField
+                  id={`info-${v}`}
+                  type='text'
+                  label={`${v}`}
+                  sx={{ width: '100%' }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+                    setFields({ ...fields, [v]: event.target.value })
+                  }}
+                  value={fields[v]}
+                  variant='filled'
+                  helperText={
+                    isPasswordAgainError && passwordAgain !== '' ? passwordAgainErrorText : ''
+                  }
+                />
+              </Box>
+            )
+          })}
+
           <Typography>
             Already our employee?
-            <a
+            <Typography
+              component='a'
               style={{
                 textDecoration: 'underline',
                 cursor: 'pointer',
@@ -170,7 +209,7 @@ const RegisterPage: React.FC = () => {
               onClick={goToLogin}
             >
               Login here!
-            </a>
+            </Typography>
           </Typography>
 
           <Typography color='error'>{errorText}</Typography>

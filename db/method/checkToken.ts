@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { unauthorized } from '../../const/api/errors'
-import { token as tokenModel } from '../model/token'
+import * as model from '../model'
 
 let timer: NodeJS.Timer
 
 function startGlobalTokenExpireCheckTime(): void {
   timer = setInterval(() => {
-    tokenModel
+    model.token
       .deleteMany({
         expired: {
           $gt: new Date(),
@@ -31,7 +31,7 @@ export async function isValidToken(token: string): Promise<boolean> {
   }
   if (timer === undefined) startGlobalTokenExpireCheckTime()
 
-  const res = await tokenModel.findOne({ token }, { expired: 1, _id: 1 })
+  const res = await model.token.findOne({ token }, { expired: 1, _id: 1 })
 
   if (res === null) {
     return false
@@ -40,7 +40,7 @@ export async function isValidToken(token: string): Promise<boolean> {
   // delete token if it expired
   if (res.expired.getTime() < Date.now()) {
     // no need for waiting it to be removed
-    tokenModel.deleteOne({ _id: res._id }).catch(() => {
+    model.token.deleteOne({ _id: res._id }).catch(() => {
       console.error('checkToken delete expired token: error')
     })
 
@@ -74,6 +74,6 @@ export async function isValidNextApiRequest(
   if (await isValidToken(token)) {
     return true
   }
-  res.status(unauthorized.code).json(unauthorized)
+  if (sendResponse) res.status(unauthorized.code).json(unauthorized)
   return false
 }
