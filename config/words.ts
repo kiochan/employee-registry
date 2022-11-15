@@ -13,4 +13,7 @@ export default {
       redirect: 'Redirection',
     },
   },
+  text: {
+    loginRequired: 'You need login to use',
+  },
 }
