@@ -44,12 +44,12 @@ const Footer: React.FC<FooterProps> = (props) => {
             props.shortBanner !== undefined
               ? '3rem'
               : {
-                  xs: '0.5rem',
-                  sm: '1rem',
-                  md: '1rem',
-                  lg: '1rem',
-                  xl: '1rem',
-                },
+                xs: '0.5rem',
+                sm: '1rem',
+                md: '1rem',
+                lg: '1rem',
+                xl: '1rem',
+              },
           transition: 'all 0.5s',
         }}
       >

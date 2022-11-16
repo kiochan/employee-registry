@@ -1,76 +1,63 @@
 import AppContainer from '../../components/AppContainer'
 import words from '../../config/words'
-
 import { Box, TextField, Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-
-import axios from 'axios'
 import { internalServerError } from '../../const/api/errors'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import links from '../../config/links'
 import { Spacer } from '@nextui-org/react'
+import { api } from '../../lib/api'
+import useRedirect from '../../hooks/useRedirect'
+import { useRouter } from 'next/router'
+import { useTokenCheck } from '../../hooks/useTokenCheck'
 
 const passwordErrorText = 'Passwords can only consist of 4-32 Latin letters or numbers'
 const passwordAgainErrorText = 'The two passwords must be the same'
 const errorTextUserAlreadyExists = 'This user is already registered'
 
 const RegisterPage: React.FC = () => {
-  const token = useAppSelector((s) => s.token.value)
   const router = useRouter()
-  if (token === null) router.push(links.home).catch(console.error)
+  const token = useAppSelector((s) => s.token.value)
+  useTokenCheck()
+  const gotoEmployees = useRedirect(links.employees)
 
   const [errorText, setErrorText] = useState<string>('')
 
   const username = String(router.query.username)
 
   useEffect(() => {
-    ;(async (): Promise<void> => {
-      const res = await axios({
-        url: `/api/employee/${username}`,
-        method: 'get',
-        params: {
-          token,
-        },
-        validateStatus: (s) => s < 499,
-      })
-
-      if (res.data.code === 200) {
-        setFields(res.data.data)
+    api('get', `/api/employee/${username}`, {
+      token,
+    }, (res) => {
+      if (res.code === 200) {
+        setFields(res.data)
       }
-    })().catch((res) => {
-      console.error(res?.data?.message ?? String(res))
     })
   }, [token])
 
   const update = (): void => {
-    ;(async (): Promise<void> => {
-      const res = await axios({
-        method: 'put',
-        url: `/api/employee/${username}`,
-        params: {
-          ...fields,
-          password: passwordAgain === '' ? undefined : passwordAgain,
-        },
-        validateStatus: (s) => s < 499,
-      })
+    api(
+      'put', `/api/employee/${username}`,
+      {
+        ...fields,
+        password: passwordAgain === '' ? undefined : passwordAgain,
+      },
+      (res) => {
 
-      switch (res.data.code) {
-        case 200: {
-          router.push(links.employees).catch(console.error)
-          return
+        switch (res.code) {
+          case 200: {
+            gotoEmployees()
+            return
+          }
+          case 403: {
+            setErrorText(errorTextUserAlreadyExists)
+            return
+          }
+          default: {
+            setErrorText(res.message ?? internalServerError.message)
+          }
         }
-        case 403: {
-          setErrorText(errorTextUserAlreadyExists)
-          return
-        }
-        default: {
-          setErrorText(res.data.message ?? internalServerError.message)
-        }
-      }
-    })().catch((err) => {
-      setErrorText(err?.data?.message ?? String(err))
-    })
+      })
   }
 
   const [fields, setFields] = useState<
@@ -84,29 +71,24 @@ const RegisterPage: React.FC = () => {
   })
 
   const deleteUser = (): void => {
-    ;(async (): Promise<void> => {
-      const res = await axios({
-        method: 'delete',
-        url: `/api/employee/${username}`,
-        validateStatus: (s) => s < 499,
-      })
-
-      switch (res.data.code) {
-        case 200: {
-          router.push(links.employees).catch(console.error)
-          return
-        }
-        case 403: {
-          setErrorText(errorTextUserAlreadyExists)
-          return
-        }
-        default: {
-          setErrorText(res.data.message ?? internalServerError.message)
+    api(
+      'delete', `/api/employee/${username}`, {},
+      (res) => {
+        switch (res.code) {
+          case 200: {
+            gotoEmployees()
+            return
+          }
+          case 403: {
+            setErrorText(errorTextUserAlreadyExists)
+            return
+          }
+          default: {
+            setErrorText(res.message ?? internalServerError.message)
+          }
         }
       }
-    })().catch((err) => {
-      setErrorText(err?.data?.message ?? String(err))
-    })
+    )
   }
 
   const [password, setPassword] = useState<string>('')

@@ -3,23 +3,20 @@ import words from '../config/words'
 
 import { Box, TextField, Button, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
 
-import axios from 'axios'
 import { internalServerError } from '../const/api/errors'
 import { useAppSelector } from '../hooks/useAppSelector'
 import { useAppDispatch } from '../hooks/useAppDispatch'
-
-const usernameErrorText = 'Usernames can only consist of 4-32 Latin letters or numbers'
-const passwordErrorText = 'Passwords can only consist of 4-32 Latin letters or numbers'
-const passwordAgainErrorText = 'The two passwords must be the same'
-const errorTextUserAlreadyExists = 'This user is already registered'
+import { api } from '../lib/api'
+import useRedirect from '../hooks/useRedirect'
+import links from '../config/links'
 
 const RegisterPage: React.FC = () => {
   const token = useAppSelector((s) => s.token.value)
   const dispatch = useAppDispatch()
 
-  const router = useRouter()
+  const gotoHome = useRedirect(links.home)
+  const gotoLogin = useRedirect(links.login)
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -53,49 +50,37 @@ const RegisterPage: React.FC = () => {
   const isPasswordError = String(password).match(/^[a-zA-Z0-9]{4,32}$/) === null
   const isPasswordAgainError = password !== passwordAgain
 
-  const goToLogin = (): void => {
-    router.push('/login').catch(console.error)
-  }
-
   const register = (): void => {
-    ;(async (): Promise<void> => {
-      const res = await axios({
-        method: 'post',
-        url: `/api/employee/${username}`,
-        params: {
-          ...fields,
-          password,
-        },
-        validateStatus: (s) => s < 499,
-      })
-
-      switch (res.data.code) {
-        case 201: {
-          dispatch({
-            type: 'token/create',
-            payload: res.data.data.token,
-          })
-          return
-        }
-        case 401: {
-          dispatch({ type: 'token/delete' })
-          return
-        }
-        case 403: {
-          setErrorText(errorTextUserAlreadyExists)
-          return
-        }
-        default: {
-          setErrorText(res.data.message ?? internalServerError.message)
+    api(
+      'post',
+      `/api/employee/${username}`,
+      {
+        ...fields,
+        password,
+      },
+      (res) => {
+        switch (res.code) {
+          case 201: {
+            dispatch({
+              type: 'token/create',
+              payload: res.data.token,
+            })
+            return
+          }
+          case 403: {
+            setErrorText(words.text.errorTextUserAlreadyExists)
+            return
+          }
+          default: {
+            setErrorText(res.message ?? internalServerError.message)
+          }
         }
       }
-    })().catch((err) => {
-      setErrorText(err?.data?.message ?? String(err))
-    })
+    )
   }
 
   if (token !== null) {
-    router.push('/redirect').catch(console.error)
+    gotoHome()
   }
 
   return (
@@ -135,7 +120,7 @@ const RegisterPage: React.FC = () => {
               value={username}
               error={isUsernameError && username !== ''}
               variant='filled'
-              helperText={isUsernameError && username !== '' ? usernameErrorText : ''}
+              helperText={isUsernameError && username !== '' ? words.text.usernameErrorText : ''}
             />
           </Box>
 
@@ -152,7 +137,7 @@ const RegisterPage: React.FC = () => {
               value={password}
               error={isPasswordError && password !== ''}
               variant='filled'
-              helperText={isPasswordError && password !== '' ? passwordErrorText : ''}
+              helperText={isPasswordError && password !== '' ? words.text.passwordErrorText : ''}
             />
           </Box>
 
@@ -170,7 +155,7 @@ const RegisterPage: React.FC = () => {
               error={isPasswordAgainError && passwordAgain !== ''}
               variant='filled'
               helperText={
-                isPasswordAgainError && passwordAgain !== '' ? passwordAgainErrorText : ''
+                isPasswordAgainError && passwordAgain !== '' ? words.text.passwordAgainErrorText : ''
               }
             />
           </Box>
@@ -191,7 +176,7 @@ const RegisterPage: React.FC = () => {
                   value={fields[v]}
                   variant='filled'
                   helperText={
-                    isPasswordAgainError && passwordAgain !== '' ? passwordAgainErrorText : ''
+                    isPasswordAgainError && passwordAgain !== '' ? words.text.passwordAgainErrorText : ''
                   }
                 />
               </Box>
@@ -206,7 +191,7 @@ const RegisterPage: React.FC = () => {
                 textDecoration: 'underline',
                 cursor: 'pointer',
               }}
-              onClick={goToLogin}
+              onClick={gotoLogin}
             >
               Login here!
             </Typography>

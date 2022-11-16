@@ -1,14 +1,12 @@
 import AppContainer from '../components/AppContainer'
 import words from '../config/words'
-
 import { Box, TextField, Button, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
-
-import axios from 'axios'
 import { internalServerError } from '../const/api/errors'
-import { useAppSelector } from '../hooks/useAppSelector'
 import links from '../config/links'
+import { useTokenCheck } from '../hooks/useTokenCheck'
+import { useRouter } from 'next/router'
+import { api } from '../lib/api'
 
 const usernameErrorText = 'Usernames can only consist of 4-32 Latin letters or numbers'
 const passwordErrorText = 'Passwords can only consist of 4-32 Latin letters or numbers'
@@ -17,8 +15,7 @@ const errorTextUserAlreadyExists = 'This user is already registered'
 
 const RegisterPage: React.FC = () => {
   const router = useRouter()
-  const token = useAppSelector((s) => s.token.value)
-  if (token === null) router.push(links.home).catch(console.error)
+  useTokenCheck()
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -57,33 +54,28 @@ const RegisterPage: React.FC = () => {
   }
 
   const register = (): void => {
-    ;(async (): Promise<void> => {
-      const res = await axios({
-        method: 'post',
-        url: `/api/employee/${username}`,
-        params: {
-          ...fields,
-          password,
-        },
-        validateStatus: (s) => s < 499,
-      })
-
-      switch (res.data.code) {
-        case 201: {
-          router.push(`/employees/${username}`).catch(console.error)
-          return
-        }
-        case 403: {
-          setErrorText(errorTextUserAlreadyExists)
-          return
-        }
-        default: {
-          setErrorText(res.data.message ?? internalServerError.message)
+    api(
+      'post', `/api/employee/${username}`,
+      {
+        ...fields,
+        password,
+      },
+      (res) => {
+        switch (res.code) {
+          case 201: {
+            router.push(`/employees/${username}`).catch(console.error)
+            return
+          }
+          case 403: {
+            setErrorText(errorTextUserAlreadyExists)
+            return
+          }
+          default: {
+            setErrorText(res.message ?? internalServerError.message)
+          }
         }
       }
-    })().catch((err) => {
-      setErrorText(err?.data?.message ?? String(err))
-    })
+    )
   }
 
   return (

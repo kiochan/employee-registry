@@ -85,12 +85,12 @@ const HeroBanner: React.FC<HeroBannerProps> = (props) => {
               props.shortBanner !== undefined
                 ? '3rem'
                 : {
-                    xs: '3rem',
-                    sm: '5rem',
-                    md: '7rem',
-                    lg: '9rem',
-                    xl: '12rem',
-                  },
+                  xs: '3rem',
+                  sm: '5rem',
+                  md: '7rem',
+                  lg: '9rem',
+                  xl: '12rem',
+                },
             transition: 'all 0.5s',
           }}
         >

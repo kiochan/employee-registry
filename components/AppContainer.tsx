@@ -1,6 +1,5 @@
 import AppBar from './AppBar'
 import Head from 'next/head'
-
 import words from '../config/words'
 import type { HeroBannerProps } from './HeroBanner'
 import HeroBanner from './HeroBanner'

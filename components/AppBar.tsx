@@ -12,23 +12,20 @@ import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import Link from 'next/link'
-
 import useAnchorOpenHandle from '../hooks/useAnchorOpenHandle'
-import useRedirect from '../hooks/useRedirect'
-import useRedirectTo from '../hooks/useRedirectTo'
-
 import { userSettings, loginOptions, pages } from '../config/navMenu'
 import words from '../config/words'
 import { useAppSelector } from '../hooks/useAppSelector'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useAppDispatch } from '../client-store'
+import { useRouter } from 'next/router'
+import { api } from '../lib/api'
 
 const AppBar: React.FC<{}> = (): JSX.Element => {
+  const router = useRouter()
+
   const [anchorElNav, handleOpenNavMenu, handleCloseNavMenu] = useAnchorOpenHandle()
   const [anchorElUser, handleOpenUserMenu, handleCloseUserMenu] = useAnchorOpenHandle()
-
-  const redirectTo = useRedirectTo()
 
   const token = useAppSelector((s) => s.token.value)
   const dispatch = useAppDispatch()
@@ -36,35 +33,19 @@ const AppBar: React.FC<{}> = (): JSX.Element => {
   const [username, setUsername] = useState<string | null>(null)
 
   useEffect(() => {
-    ;(async () => {
-      if (token === null) return
-      const res = await axios({
-        url: '/api/whois',
-        method: 'get',
-        params: {
-          token,
-        },
-        validateStatus: (s) => s < 500,
-      })
+    api('get', '/api/whois', {
+      token,
+    },
+      (res) => {
+        if (res.code === 200) {
+          setUsername(res.data.username)
 
-      if (res.data.code === 401) {
-        dispatch({ type: 'token/delete' })
+        } else {
+          dispatch({ type: 'token/delete' })
+        }
       }
-
-      if (res.data.code === 200) {
-        setUsername(res.data.data.username)
-        return
-      }
-
-      dispatch({ type: 'token/delete' })
-
-      console.error('Error message from remote: ' + String(res.data.message))
-    })().catch(console.error)
-  }, [token, setUsername])
-
-  const login = useRedirect('/login')
-  const register = useRedirect('/register')
-  const logout = useRedirect('/logout')
+    )
+  }, [token])
 
   const component = (
     <MuiAppBar
@@ -176,54 +157,12 @@ const AppBar: React.FC<{}> = (): JSX.Element => {
               onClose={handleCloseUserMenu}
             >
               {(token === null ? loginOptions : userSettings).map(({ name, link }, index) => {
-                if (link === '/login') {
-                  return (
-                    <MenuItem
-                      key={index}
-                      onClick={() => {
-                        handleCloseUserMenu()
-                        login()
-                      }}
-                    >
-                      <Typography textAlign='center'>{name}</Typography>
-                    </MenuItem>
-                  )
-                }
-
-                if (link === '/register') {
-                  return (
-                    <MenuItem
-                      key={index}
-                      onClick={() => {
-                        handleCloseUserMenu()
-                        register()
-                      }}
-                    >
-                      <Typography textAlign='center'>{name}</Typography>
-                    </MenuItem>
-                  )
-                }
-
-                if (link === '/logout') {
-                  return (
-                    <MenuItem
-                      key={index}
-                      onClick={() => {
-                        handleCloseUserMenu()
-                        logout()
-                      }}
-                    >
-                      <Typography textAlign='center'>{name}</Typography>
-                    </MenuItem>
-                  )
-                }
-
                 return (
                   <MenuItem
                     key={index}
                     onClick={() => {
                       handleCloseUserMenu()
-                      redirectTo(link)
+                      router.push(link).catch(console.error)
                     }}
                   >
                     <Typography textAlign='center'>{name}</Typography>

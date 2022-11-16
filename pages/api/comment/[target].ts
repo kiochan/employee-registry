@@ -19,6 +19,7 @@ type ApiTokenResponse =
         contents: string
       }>
     }
+
 export default async function tokenHandle(
   req: NextApiRequest,
   res: NextApiResponse<ApiTokenResponse>,
@@ -27,6 +28,7 @@ export default async function tokenHandle(
 
   try {
     switch (req.method) {
+      // create a new comment
       case 'POST': {
         const { token, target, contents } = req.query
 
@@ -55,6 +57,7 @@ export default async function tokenHandle(
         })
       }
 
+      // read comments
       case 'GET': {
         const { token, target } = req.query
 

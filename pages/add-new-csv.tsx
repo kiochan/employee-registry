@@ -3,19 +3,18 @@ import words from '../config/words'
 
 import { Box, Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 
 import axios from 'axios'
-import { useAppSelector } from '../hooks/useAppSelector'
 import links from '../config/links'
 import { useFilePicker } from 'use-file-picker'
 import { Radio, Text } from '@nextui-org/react'
 import { parseCsv } from '../lib/parseCsv'
+import { useTokenCheck } from '../hooks/useTokenCheck'
+import useRedirect from '../hooks/useRedirect'
 
 const RegisterPage: React.FC = () => {
-  const router = useRouter()
-  const token = useAppSelector((s) => s.token.value)
-  if (token === null) router.push(links.home).catch(console.error)
+  useTokenCheck()
+  const gotoEmployees = useRedirect(links.employees)
 
   const [encoding, setEncoding] = useState<'uft-8' | 'iso-8859-15'>('uft-8')
   const [list, setList] = useState<Array<Record<string, string>>>([])
@@ -40,7 +39,7 @@ const RegisterPage: React.FC = () => {
       }),
     )
       .then(() => {
-        router.push('/employees').catch(console.error)
+        gotoEmployees()
       })
       .catch(console.error)
   }

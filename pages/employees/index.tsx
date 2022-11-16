@@ -5,13 +5,11 @@ import words from '../../config/words'
 import ContentHeader from '../../components/ContentHeader'
 import ContentPageSelector from '../../components/ContentPageSelector'
 import { Box, Typography } from '@mui/material'
-
 import { Card, Grid, Row, Text } from '@nextui-org/react'
 import links from '../../config/links'
 import type { IEmployeeBase } from '../../db/schema'
-import axios from 'axios'
 import { useAppSelector } from '../../hooks/useAppSelector'
-import { useAppDispatch } from '../../client-store'
+import { api } from '../../lib/api'
 
 const ShopPage: React.FC = () => {
   const router = useRouter()
@@ -21,8 +19,6 @@ const ShopPage: React.FC = () => {
 
   const [employees, setEmployees] = useState<IEmployeeBase[]>([])
   const [searchText, setSearchText] = useState<string>('')
-
-  const dispatch = useAppDispatch()
 
   const page: number = parseInt(String(router.query.page ?? 1))
   const search: string = String(router.query.search ?? '')
@@ -43,34 +39,21 @@ const ShopPage: React.FC = () => {
         : `no results for username with "${search}"`
 
   useEffect(() => {
-    ; (async (): Promise<void> => {
-      const res = await axios({
-        url: '/api/employee',
-        method: 'get',
-        params: {
-          offset,
-          limit,
-          query: search,
-          token,
-        },
-        validateStatus: (s) => s < 499,
-      })
-
-      if (res.data.code === 401) {
-        dispatch({ type: 'token/delete' })
-      }
-
-      if (res.data.code === 200) {
-        if (res.data?.total !== undefined) {
-          setTotal(res.data.data.length)
-        }
-        if (res.data?.data !== undefined) {
-          setEmployees(res.data.data)
+    api(
+      'get', '/api/employee',
+      {
+        offset,
+        limit,
+        query: search,
+        token,
+      },
+      (res) => {
+        if (res.code === 200) {
+          setTotal(res.data.length)
+          setEmployees(res.data)
         }
       }
-    })().catch((res) => {
-      console.error(res?.data?.message ?? String(res))
-    })
+    )
   }, [offset, search])
 
   const onSearchChange = useCallback(

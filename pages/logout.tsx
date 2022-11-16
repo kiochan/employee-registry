@@ -1,18 +1,17 @@
-import { useRouter } from 'next/router'
 import AppContainer from '../components/AppContainer'
 import words from '../config/words'
 import { useEffect, useState } from 'react'
-import { useAppSelector } from '../hooks/useAppSelector'
 import { useAppDispatch } from '../client-store'
+import links from '../config/links'
+import useRedirect from '../hooks/useRedirect'
 
 const delta = 800
 const startTimer = delta * 3
 
 const LogoutPage: React.FC = () => {
-  const router = useRouter()
+  const gotoHome = useRedirect(links.home)
   const [btnTxt, setBtnTxt] = useState<string>(`wait ${startTimer / delta}s`)
 
-  const redirect = useAppSelector((s) => s.redirect.path)
   const dispatch = useAppDispatch()
 
   dispatch({ type: 'token/delete' })
@@ -23,7 +22,7 @@ const LogoutPage: React.FC = () => {
     const timer = setInterval(() => {
       setBtnTxt(`wait ${Math.max(i / d, 0)}s`)
       if (i <= 0) {
-        router.push('/').catch(console.error)
+        gotoHome()
       }
       i -= d
     }, d)
@@ -34,7 +33,7 @@ const LogoutPage: React.FC = () => {
     <AppContainer
       title={words.site.titles.logout}
       subtitle='logout in progress'
-      buttonLink={redirect}
+      buttonLink={links.home}
       buttonText={btnTxt}
       displayHero
     ></AppContainer>

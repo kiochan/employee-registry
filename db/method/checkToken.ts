@@ -4,6 +4,9 @@ import * as model from '../model'
 
 let timer: NodeJS.Timer
 
+/**
+ * this function will remove expired token every hour
+ */
 function startGlobalTokenExpireCheckTime(): void {
   timer = setInterval(() => {
     model.token

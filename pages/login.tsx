@@ -3,19 +3,16 @@ import words from '../config/words'
 
 import { Box, TextField, Button, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
 
-import axios from 'axios'
 import links from '../config/links'
 import { useAppSelector } from '../hooks/useAppSelector'
 import { useAppDispatch } from '../client-store'
-
-const usernameErrorText = 'Usernames can only consist of 4-32 Latin letters or numbers'
-const passwordErrorText = 'Passwords can only consist of 4-32 Latin letters or numbers'
-const incorrectPasswordErrorText = 'Username and password do not match'
+import { api } from '../lib/api'
+import useRedirect from '../hooks/useRedirect'
 
 const LoginPage: React.FC = () => {
-  const router = useRouter()
+  const gotoRegister = useRedirect(links.register)
+  const gotoHome = useRedirect(links.home)
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -36,39 +33,26 @@ const LoginPage: React.FC = () => {
   const isUsernameError = String(username).match(/^[a-zA-Z0-9]{4,32}$/) === null
   const isPassError = String(password).match(/^[a-zA-Z0-9]{4,32}$/) === null
 
-  const goToRegister = (): void => {
-    router.push(links.register).catch(console.error)
-  }
-
   const login = (): void => {
-    ;(async (): Promise<void> => {
-      const res = await axios({
-        method: 'post',
-        url: '/api/token',
-        params: {
-          username,
-          password,
-        },
-        validateStatus: (s) => s < 499,
-      })
-
-      if (res.data.code === 401) {
-        dispatch({ type: 'token/delete' })
-      }
-
-      if (res.data.code !== 201) {
-        setErrorText(incorrectPasswordErrorText)
-      } else {
+    api('post', '/api/token', {
+      username,
+      password,
+    }, (res) => {
+      if (res.code === 201) {
         dispatch({
           type: 'token/create',
-          payload: res.data.data.token,
+          payload: res.data.token,
         })
+        return
       }
-    })().catch((error) => setErrorText(error.message ?? String(error)))
+
+      setErrorText(words.text.incorrectPasswordErrorText)
+    }
+    )
   }
 
   if (token !== null) {
-    router.push(links.register).catch(console.error)
+    gotoHome()
   }
 
   return (
@@ -105,7 +89,7 @@ const LoginPage: React.FC = () => {
               value={username}
               error={isUsernameError && username !== ''}
               variant='filled'
-              helperText={isUsernameError && username !== '' ? usernameErrorText : ''}
+              helperText={isUsernameError && username !== '' ? words.text.usernameErrorText : ''}
               inputProps={{
                 autoComplete: 'email',
               }}
@@ -122,7 +106,7 @@ const LoginPage: React.FC = () => {
               value={password}
               error={isPassError && password !== ''}
               variant='filled'
-              helperText={isPassError && password !== '' ? passwordErrorText : ''}
+              helperText={isPassError && password !== '' ? words.text.passwordErrorText : ''}
               inputProps={{
                 autoComplete: 'password-current',
               }}
@@ -152,7 +136,7 @@ const LoginPage: React.FC = () => {
             </Button>
             <Button
               variant='outlined'
-              onClick={goToRegister}
+              onClick={gotoRegister}
               sx={{
                 width: '10rem',
                 margin: '1rem',

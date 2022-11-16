@@ -1,21 +1,13 @@
 import AppContainer from '../components/AppContainer'
 import words from '../config/words'
-
-import { useAppSelector } from '../hooks/useAppSelector'
 import { Table, Text } from '@nextui-org/react'
-
 import { useEffect, useState } from 'react'
 import type { IEmployeeBase } from '../db/schema'
-import axios from 'axios'
-import { useRouter } from 'next/router'
-import links from '../config/links'
-import { useAppDispatch } from '../client-store'
+import { api } from '../lib/api'
+import { useTokenCheck } from '../hooks/useTokenCheck'
 
 const RegisterPage: React.FC = () => {
-  const router = useRouter()
-  const token = useAppSelector((s) => s.token.value)
-  const dispatch = useAppDispatch()
-  if (token === null) router.push(links.home).catch(console.error)
+  const token = useTokenCheck()
 
   const [employee, setEmployee] = useState<IEmployeeBase>({
     username: '',
@@ -29,26 +21,17 @@ const RegisterPage: React.FC = () => {
   console.log(employee)
 
   useEffect(() => {
-    ;(async (): Promise<void> => {
-      const res = await axios({
-        url: '/api/whois',
-        method: 'get',
-        params: {
-          token,
-        },
-        validateStatus: (s) => s < 499,
-      })
-
-      if (res.data.code === 200) {
-        setEmployee(res.data.data)
+    api(
+      'get', '/api/whois',
+      {
+        token,
+      },
+      (res) => {
+        if (res.code === 200) {
+          setEmployee(res.data)
+        }
       }
-
-      if (res.data.code === 401) {
-        dispatch({ type: 'token/delete' })
-      }
-    })().catch((res) => {
-      console.error(res?.data?.message ?? String(res))
-    })
+    )
   }, [token])
 
   return (

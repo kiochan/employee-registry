@@ -1,15 +1,15 @@
-import { useRouter } from 'next/router'
 import AppContainer from '../components/AppContainer'
 import links from '../config/links'
 import words from '../config/words'
 import { useAppSelector } from '../hooks/useAppSelector'
+import useRedirect from '../hooks/useRedirect'
 
 const HomePage: React.FC = () => {
   const token = useAppSelector((s) => s.token.value)
-  const router = useRouter()
+  const gotoEmployees = useRedirect(links.employees)
 
   if (token !== null) {
-    router.push(links.employees).catch(console.error)
+    gotoEmployees()
   }
 
   return (

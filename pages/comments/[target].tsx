@@ -5,11 +5,11 @@ import { Box, Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-import axios from 'axios'
 import links from '../../config/links'
 import type { FormElement } from '@nextui-org/react'
 import { Input, Text } from '@nextui-org/react'
 import { useAppSelector } from '../../hooks/useAppSelector'
+import { api } from '../../lib/api'
 
 const RegisterPage: React.FC = () => {
   const token = useAppSelector((s) => s.token.value)
@@ -32,40 +32,35 @@ const RegisterPage: React.FC = () => {
     reload()
   }, [])
 
+  // refresh comment list
   const reload = (): void => {
-    ;(async (): Promise<void> => {
-      const res = await axios({
-        url: `/api/comment/${String(target)}`,
-        method: 'get',
-        params: {
-          token,
-        },
-        validateStatus: (s) => s < 500,
-      })
-
-      setComments(res.data.data)
-    })().catch(console.error)
+    api(
+      'get',
+      `/api/comment/${String(target)}`,
+      {
+        token,
+      },
+      (res) => {
+        setComments(res.data)
+      },
+    )
   }
 
+  // send a comment
   const sendComment = (): void => {
     if (message.length <= 0) return
-    ;(async (): Promise<void> => {
-      const res = await axios({
-        url: `/api/comment/${String(target)}`,
-        method: 'post',
-        params: {
-          token,
-          contents: message,
-        },
-        validateStatus: (s) => s < 500,
-      })
 
-      if (res.data.code === 201) {
+    api('post', `/api/comment/${String(target)}`, {
+      token,
+      contents: message,
+    }, (res) => {
+      if (res.code === 201) {
         reload()
         setMessage('')
       }
-    })().catch(console.error)
+    })
   }
+
 
   return (
     <AppContainer title={words.site.titles.employee} shortBanner>
