@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "ee-shop",
+      "name": "er-sys",
       "script": "pnpm",
       "args": "run dev -p 80",
       "watch": true,
