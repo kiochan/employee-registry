@@ -33,6 +33,10 @@ export const pages = [
     name: words.site.titles.employees,
   },
   {
+    link: links.addNew,
+    name: words.site.nav.addNew,
+  },
+  {
     link: links.comments,
     name: words.site.nav.comments,
   },
