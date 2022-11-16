@@ -39,11 +39,11 @@ const ShopPage: React.FC = () => {
     search === ''
       ? ''
       : employees.length > 0
-      ? `results of "${search}"`
-      : `no results for username with "${search}"`
+        ? `results of "${search}"`
+        : `no results for username with "${search}"`
 
   useEffect(() => {
-    ;(async (): Promise<void> => {
+    ; (async (): Promise<void> => {
       const res = await axios({
         url: '/api/employee',
         method: 'get',
@@ -84,7 +84,7 @@ const ShopPage: React.FC = () => {
     router
       .push({
         pathname: links.employees,
-        query: { page, search: searchText },
+        query: { page: 1, search: searchText },
       })
       .catch(console.error)
   }, [router, searchText, page])
