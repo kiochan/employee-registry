@@ -62,7 +62,7 @@ const ShopPage: React.FC = () => {
 
       if (res.data.code === 200) {
         if (res.data?.total !== undefined) {
-          setTotal(res.data.total)
+          setTotal(res.data.data.length)
         }
         if (res.data?.data !== undefined) {
           setEmployees(res.data.data)
