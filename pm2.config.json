@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "ee-shop",
+      "script": "pnpm",
+      "args": "run dev -p 80",
+      "watch": true,
+      "ignore_watch": ["node_modules", "public", "data", ".next"]
+    }
+  ]
+}
