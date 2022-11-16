@@ -6,6 +6,7 @@ import { useDb } from '../../../db'
 import { isValidNextApiRequest } from '../../../db/method'
 import type { IEmployee } from '../../../db/schema'
 import { generateSalt, getHashedPassword } from '../../../lib/hashed-password'
+import type { ResponseBaseSuccessful } from '../../../types/api/common'
 import type {
   ResponseEmployee,
   ResponseReadEmployee,
@@ -116,6 +117,67 @@ export default async function employeeHandle(
         }
 
         return res.status(internalServerError.code).json(internalServerError)
+      }
+
+      // update
+      case 'PUT': {
+        if (employee === null) {
+          return res.status(notFound.code).json(notFound)
+        }
+
+        const updateObj: {
+          email?: string
+          lastName?: string
+          firstName?: string
+          address?: string
+          role?: string
+          password?: string
+          passwordSalt?: string
+        } = {}
+
+        const fields = ['email', 'lastName', 'firstName', 'address', 'role'] as const
+
+        for (const field of fields) {
+          if (typeof req.query[field] === 'string') {
+            updateObj[field] = req.query[field] as string
+          }
+        }
+
+        if (typeof req.query.password === 'string') {
+          // create new salt for password
+          const salt = (updateObj.passwordSalt = generateSalt())
+          // hash it
+          updateObj.password = getHashedPassword(req.query.password, salt)
+        }
+
+        await model.employee.findOneAndUpdate({ username }, updateObj)
+
+        const result: ResponseBaseSuccessful = {
+          code: HttpStatusCode.Ok,
+          status: 'success',
+        }
+
+        return res.status(result.code).json(result)
+      }
+
+      // delete
+      case 'DELETE': {
+        console.log(username, employee)
+        if (employee === null) {
+          return res.status(notFound.code).json(notFound)
+        }
+
+        await model.employee.deleteOne({ username })
+
+        const result: ResponseBaseSuccessful = {
+          code: HttpStatusCode.Ok,
+          status: 'success',
+        }
+
+        return res.status(result.code).json(result)
+      }
+      default: {
+        return res.status(badRequest.code).json(badRequest)
       }
     }
   } catch (e) {

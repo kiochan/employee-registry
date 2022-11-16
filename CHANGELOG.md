@@ -4,10 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [0.2.0](https://github.com/kiochan/employee-registry/compare/v0.1.0...v0.2.0) (2022-11-16)
 
-
 ### Features
 
-* 🎸 impl bundle 2 ([282e915](https://github.com/kiochan/employee-registry/commit/282e915ec38532c7ae7e34f9a6e302adbac8b58e))
+- 🎸 impl bundle 2 ([282e915](https://github.com/kiochan/employee-registry/commit/282e915ec38532c7ae7e34f9a6e302adbac8b58e))
 
 ## 0.1.0 (2022-11-15)
 

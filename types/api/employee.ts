@@ -56,6 +56,20 @@ export interface ResponseCreateEmployee extends ResponseBaseSuccessful {
 
 export type ResponseEmployees = ResponseReadEmployees | ResponseBaseError
 
+/**
+ * update employee
+ */
+export interface RequestUpdateEmployee extends IEmployeeBase, RequestWithToken {
+  password?: string
+}
+
+/**
+ * delete employee
+ */
+export interface RequestDeleteEmployee extends RequestWithToken {
+  username: string
+}
+
 // this type is not quite right, it is too generic
 export type ResponseEmployee =
   | ResponseReadEmployee
