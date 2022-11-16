@@ -5,4 +5,6 @@ export default {
   register: '/register',
   logout: '/logout',
   employees: '/employees',
+  addNew: '/add-new',
+  addViaCsv: '/add-new-csv',
 }

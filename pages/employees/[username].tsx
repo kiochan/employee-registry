@@ -52,7 +52,7 @@ const RegisterPage: React.FC = () => {
   }, [token])
 
   return (
-    <AppContainer title={words.site.titles.myself} shortBanner>
+    <AppContainer title={words.site.titles.employee} shortBanner>
       <Text h3 b>
         Details of employee &quot;
         {employee.firstName === undefined && employee.lastName === undefined

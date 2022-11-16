@@ -1,4 +1,4 @@
-import type { Model, Schema } from 'mongoose';
+import type { Model, Schema } from 'mongoose'
 import { model, models } from 'mongoose'
 
 /**

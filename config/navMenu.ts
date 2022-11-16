@@ -32,4 +32,8 @@ export const pages = [
     link: links.employees,
     name: words.site.titles.employees,
   },
+  {
+    link: links.addNew,
+    name: words.site.nav.addNew,
+  },
 ]
