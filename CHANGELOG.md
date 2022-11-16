@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/kiochan/employee-registry/compare/v0.1.0...v0.3.0) (2022-11-16)
+
+
+### Features
+
+* 🎸 impl bundle 2 ([282e915](https://github.com/kiochan/employee-registry/commit/282e915ec38532c7ae7e34f9a6e302adbac8b58e))
+* 🎸 impl bundle 3 ([0686c81](https://github.com/kiochan/employee-registry/commit/0686c8100f0cf24b1b8d1430ec8f184b14a248bf))
+
 ## [0.2.0](https://github.com/kiochan/employee-registry/compare/v0.1.0...v0.2.0) (2022-11-16)
 
 ### Features
