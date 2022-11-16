@@ -7,4 +7,5 @@ export default {
   employees: '/employees',
   addNew: '/add-new',
   addViaCsv: '/add-new-csv',
+  comments: '/comments',
 }

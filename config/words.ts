@@ -14,9 +14,11 @@ export default {
       settings: 'Settings',
       notFound: '404',
       redirect: 'Redirection',
+      comments: 'Comments',
     },
     nav: {
       addNew: 'Add',
+      comments: 'Comments',
     },
   },
   text: {
