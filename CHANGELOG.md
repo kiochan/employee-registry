@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://github.com/kiochan/employee-registry/compare/v0.5.0...v0.5.1) (2022-11-16)
+
+
+### Bug Fixes
+
+* 🐛 after search should set page to 1 ([34f328e](https://github.com/kiochan/employee-registry/commit/34f328e7be4165ff7b11c57f5fd3296bf5510322))
+* 🐛 use correct number ([c5bd418](https://github.com/kiochan/employee-registry/commit/c5bd4188551365257f6664d7cc4a909e37698454))
+
 ## 0.5.0 (2022-11-16)
 
 
